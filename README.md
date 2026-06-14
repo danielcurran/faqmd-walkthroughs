@@ -43,13 +43,20 @@ the content at [faqmd.dev](https://faqmd.dev).
    node scripts/convert.js "https://gamefaqs.gamespot.com/.../faqs/12345?print=1"
    ```
 2. Optionally annotate with RetroAchievements via the opencode agent skill
-3. Split into mobile-friendly sections:
+3. Optionally run quality passes:
+   ```bash
+   # (in opencode)
+   "Run reformat-review on walkthrough.md"
+   "Run art-modernize on walkthrough.md"
+   ```
+4. Split into sections:
    ```bash
    node scripts/split-guide.js walkthrough.md guide/
    ```
-4. Copy the generated `guide/` directory into this repo, replacing the existing one
-5. Update `reader.html` and `index.html` with the new game title, author, and section count
-6. Commit and push — the site auto-deploys
+5. Copy the generated `guide/` directory into this repo, replacing the existing one
+6. Update `reader.html` with the new game title and author
+7. Update `index.html` guide-card `data-*` attributes with the new game name and author. The section count loads dynamically from `guide/toc.json`.
+8. Commit and push — the site auto-deploys
 
 ## Related
 
