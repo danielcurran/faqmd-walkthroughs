@@ -842,7 +842,7 @@
           {
             "num": "12.2.2",
             "title": "12.2.2. Water",
-            "file": "12.2.2-water.md",
+            "file": "12.2.4-force.md",
             "depth": 2,
             "children": []
           },
@@ -898,21 +898,21 @@
           {
             "num": "12.2.10",
             "title": "12.2.10. Destroy",
-            "file": "12.2.12-emp.md",
+            "file": "13-items.md",
             "depth": 2,
             "children": []
           },
           {
             "num": "12.2.11",
             "title": "12.2.11. Cleanse",
-            "file": "12.2.12-emp.md",
+            "file": "13-items.md",
             "depth": 2,
             "children": []
           },
           {
             "num": "12.2.12",
             "title": "12.2.12. EMP",
-            "file": "12.2.12-emp.md",
+            "file": "13-items.md",
             "depth": 2,
             "children": []
           }
@@ -1186,7 +1186,7 @@
           {
             "num": "14.2.5",
             "title": "14.2.5. Unique",
-            "file": "14.2.5-unique.md",
+            "file": "14.3-bestiary.md",
             "depth": 2,
             "children": []
           }
