@@ -213,6 +213,10 @@ a:hover { text-decoration: underline; color: #f5e88a; }
   margin: 10px 0; line-height: 1.75;
   font-size: 1rem;
 }
+#content p strong:first-child {
+  color: var(--ff-gold);
+  font-weight: 600;
+}
 #content ul, #content ol {
   margin: 10px 0; padding-left: 24px;
   line-height: 1.75;
@@ -263,6 +267,10 @@ a:hover { text-decoration: underline; color: #f5e88a; }
   border: none; border-top: 1px solid var(--ff-border);
   margin: 28px 0;
 }
+#content pre.keep-scroll {
+  white-space: pre;
+  overflow-x: auto;
+}
 
 #loading { text-align: center; padding: 60px; color: var(--ff-muted); font-style: italic; }
 
@@ -299,7 +307,7 @@ a:hover { text-decoration: underline; color: #f5e88a; }
   #content ul, #content ol, #content blockquote, #content hr {
     max-width: none; margin-left: 0; margin-right: 0;
   }
-   #content pre, #content table {
+   #content pre {
     font-size: 0.72rem;
     padding: 10px 12px;
     max-width: 100%;
@@ -308,6 +316,12 @@ a:hover { text-decoration: underline; color: #f5e88a; }
     overflow-wrap: break-word;
     tab-size: 2;
     hyphens: none;
+  }
+  #content table {
+    font-size: 0.85rem;
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
   }
   #content pre code {
     font-size: 0.72rem;
@@ -455,7 +469,7 @@ function isAsciiArtBlock(el) {
     // Repeated decorative chars
     if (/^[\*\-_=¯]{8,}$/.test(s)) { artLines++; continue; }
     // Box-drawing patterns
-    if ((s.match(/[\/\\\|\-]/g) || []).length >= 5) { artLines++; continue; }
+    if ((s.match(/[\/\\\|]/g) || []).length >= 5) { artLines++; continue; }
     // Lines where special chars heavily outnumber letters
     const letters = (s.match(/[a-zA-Z]/g) || []).length;
     const special = (s.match(/[^a-zA-Z0-9\s]/g) || []).length;
