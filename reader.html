@@ -495,7 +495,7 @@ $('search-input').addEventListener('input', function() {
 $('menu-btn').addEventListener('click', toggleSidebar);
 
 $('main').addEventListener('click', e => {
-  if (sidebarOpen && !e.target.closest('#sidebar')) toggleSidebar();
+  if (sidebarOpen && !e.target.closest('#sidebar') && e.target.id !== 'menu-btn') toggleSidebar();
 });
 $('prev-btn').addEventListener('click', goPrev);
 $('next-btn').addEventListener('click', goNext);
