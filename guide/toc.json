@@ -690,8 +690,8 @@
           },
           {
             "num": "8.1.8",
-            "title": "+###################@*###=+##x@##@###%######## @##= #= Lives:",
-            "file": "8.1.8-x-lives.md",
+            "title": "8.1.8. Wren",
+            "file": "8.1.8-wren.md",
             "depth": 2,
             "children": []
           },
@@ -842,7 +842,7 @@
           {
             "num": "12.2.2",
             "title": "12.2.2. Water",
-            "file": "12.2.2-water.md",
+            "file": "12.2.4-force.md",
             "depth": 2,
             "children": []
           },
@@ -1295,7 +1295,7 @@
           {
             "num": "15.3.3",
             "title": "15.3.3. D-Elm-Lars",
-            "file": "15.3.4-carnivorous-trees.md",
+            "file": "15.3.3-d-elm-lars.md",
             "depth": 2,
             "children": []
           },
