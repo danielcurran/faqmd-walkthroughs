@@ -438,3 +438,34 @@ Cloudflare Workers free plan has **10ms CPU time per request** (wall-clock is un
 | 5 | `curl http://localhost:3000/convert/` | Returns HTML |
 | 6 | `node -e "require('fs').existsSync('wrangler.toml')"` | true |
 | 7 | `node -e "require('fs').readFileSync('worker.js','utf8').includes('export default')"` | true |
+
+---
+
+## Post-Plan: Reader Mobile Fix (implemented)
+
+### Root Cause
+
+On mobile, the `<script type="module">` in `reader.html` failed to load the CDN-hosted `marked@14.1.4` ESM file (93KB unminified). Slow mobile networks or Safari's module handling caused the import to fail silently, which meant no JS ran at all — "Loading guide..." persisted forever and the sidebar couldn't open.
+
+### Changes Made (faqmd-content)
+
+| # | Change | File |
+|---|---|---|
+| 1 | Bundled `marked.js` locally from CDN | `marked.js` (new, 92,854 bytes) |
+| 2 | Updated import from CDN URL to `./marked.js` | `reader.html:345` |
+| 3 | Wrapped `loadToc()` in try/catch with user-facing error messages | `reader.html:352-378` |
+| 4 | Added empty TOC state ("Guide not available.") | `reader.html:380-386` |
+| 5 | Improved `loadSection()` error messages (context-aware) | `reader.html:419-425` |
+| 6 | Added sidebar backdrop dismissal on mobile | `reader.html:497-499` |
+| 7 | Added `console.warn` for fetch failures | Multiple locations |
+| 8 | Updated deploy workflow to copy `marked.js` | `faqmd/.github/workflows/deploy.yml` (later moved) |
+
+### Post-Plan: Deploy Workflow Moved (implemented)
+
+The deploy workflow was moved from the public `faqmd` repo to the private `faqmd-content` repo, so pushes to `faqmd-content` (where the content actually lives) trigger immediate deployment.
+
+**Changes:**
+- `faqmd-content/.github/workflows/deploy.yml` — Created (deploys to `danielcurran/faqmd` gh-pages via external_repository + DEPLOY_TOKEN PAT)
+- `faqmd/.github/workflows/deploy.yml` — Deleted
+
+**One-time setup:** A GitHub PAT with `Contents: write` on `danielcurran/faqmd` saved as `DEPLOY_TOKEN` secret in `faqmd-content`.|
