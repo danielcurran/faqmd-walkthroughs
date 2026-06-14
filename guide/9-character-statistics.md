@@ -6,6 +6,8 @@ The following lists detail the statistics and required EXP for each character, 
 
 
 
+<!-- MODERNIZE:unknown -->
+
 ```
 |Lv |  EXP  | HP | TP |STR|MEN|AGL|DEX|Techs |S1 S2 S3 S4 S5 |
        |---+-------+----+----+---+---+---+---+------+---------------|
@@ -69,6 +71,8 @@ Alys - Initial Techniques: FOI,SHIFT,SANER Skill 1 Skill 2 Skill 3 VORTEX MOON
 
 
 
+<!-- MODERNIZE:unknown -->
+
 ```
 |Lv |  EXP  | HP | TP |STR|MEN|AGL|DEX|Techs |S1 S2 S3 |
        |---+-------+----+----+---+---+---+---+------+---------|
@@ -121,6 +125,8 @@ Alys - Initial Techniques: FOI,SHIFT,SANER Skill 1 Skill 2 Skill 3 VORTEX MOON
 Hahn - Initial Techniques: RES,GELUN Skill 1 Skill 2 Skill 3 VISION ASTRAL ELIMINAT
 
 
+
+<!-- MODERNIZE:unknown -->
 
 ```
 |Lv |  EXP  | HP | TP |STR|MEN|AGL|DEX|Techs |S1 S2 S3 |
@@ -184,6 +190,8 @@ Rune - Initial Techniques: FOI,WAT,GRA,AROWS,HINAS,RYUKA Skill 1 Skill 2 Skill 
 
 
 
+<!-- MODERNIZE:unknown -->
+
 ```
 |Lv |  EXP  | HP | TP |STR|MEN|AGL|DEX|Techs |S1 S2 S3 S4 S5 S6 S7 |
        |---+-------+----+----+---+---+---+---+------+---------------------|
@@ -225,6 +233,8 @@ Rune - Initial Techniques: FOI,WAT,GRA,AROWS,HINAS,RYUKA Skill 1 Skill 2 Skill 
 Gryz - Initial Technique: BROSE Skill 1 Skill 2 Skill 3 CRASH WAR CRY SWEEPING
 
 
+
+<!-- MODERNIZE:unknown -->
 
 ```
 |Lv |  EXP  | HP | TP |STR|MEN|AGL|DEX|S1 S2 S3 |
@@ -285,6 +295,8 @@ Gryz - Initial Technique: BROSE Skill 1 Skill 2 Skill 3 CRASH WAR CRY SWEEPING
 Rika - Initial Technique: RES Skill 1 Skill 2 Skill 3 Skill 4 ILLUSION DBLSLASH ELIMINAT DISRUPT
 
 
+
+<!-- MODERNIZE:unknown -->
 
 ```
 |Lv |  EXP  | HP | TP |STR|MEN|AGL|DEX|Techs |S1 S2 S3 S4 |
@@ -353,6 +365,8 @@ Demi - Skill 1 Skill 2 Skill 3 Skill 4 Skill 5 Skill 6* RECOVER STASISBM SPARK 
 
 
 
+<!-- MODERNIZE:unknown -->
+
 ```
 |Lv |  EXP  | HP |STR|AGL|DEX|S1 S2 S3 S4 S5 S6* |
        |---+-------+----+---+---+---+-------------------|
@@ -403,6 +417,8 @@ Wren - Skill 1 Skill 2 Skill 3 Skill 4 Skill 5* Skill 6* Skill 7* RECOVER FLARE
 
 
 
+<!-- MODERNIZE:unknown -->
+
 ```
 |Lv |  EXP  | HP |STR|AGL|DEX|S1 S2 S3 S4 S5* S6* S7* |
        |---+-------+----+---+---+---+------------------------|
@@ -444,6 +460,8 @@ Raja - Initial Techniques: RES,ANTI,RIMPA,SAR,AROWS,RIMIT,GIRES,SEALS,REVER Ski
 
 
 
+<!-- MODERNIZE:unknown -->
+
 ```
 |Lv |  EXP  | HP | TP |STR|MEN|AGL|DEX|Techs |S1 S2 S3 S4 S5 |
        |---+-------+----+----+---+---+---+---+------+---------------|
@@ -478,6 +496,8 @@ Kyra - Initial Techniques: RES,FOI,ANTI,RIMPA,GIRES,GIFOI,GRA Skill 1 Skill 2 S
 
 
 
+<!-- MODERNIZE:unknown -->
+
 ```
 |Lv |  EXP  | HP | TP |STR|MEN|AGL|DEX|Techs |S1 S2 S3 S4 S5 S6 S7 |
        |---+-------+----+----+---+---+---+---+------+---------------------|
@@ -511,6 +531,8 @@ Kyra - Initial Techniques: RES,FOI,ANTI,RIMPA,GIRES,GIFOI,GRA Skill 1 Skill 2 S
 Seth - Skill 1 Skill 2 Skill 3 Skill 4 SHADOW CORRSION MINDBLST DTHSPELL
 
 
+
+<!-- MODERNIZE:unknown -->
 
 ```
 |Lv |  EXP  | HP |STR|MEN|AGL|DEX|S1 S2 S3 S4 |
