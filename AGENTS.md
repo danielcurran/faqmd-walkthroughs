@@ -9,9 +9,9 @@ and deploy workflow. The converter tool lives in a separate repo:
 - **[faqmd](https://github.com/danielcurran/faqmd)** — scripts and opencode agent skills
 
 ## Key Files
-- `reader.html` — Walkthrough reader app. Imports `marked.js` for markdown rendering, fetches `guide/toc.json` for sidebar TOC, loads per-section `.md` files on navigation.
+- `reader.html` — Walkthrough reader app. Imports `marked.js` for markdown rendering, fetches `guide/toc.json` for sidebar TOC and `guide/meta.json` for title/author, loads per-section `.md` files on navigation.
 - `index.html` — Landing page at gamemds.org. Lists available walkthroughs.
-- `guide/` — Walkthrough section files: `index.md` (Table of Contents), `toc.json` (machine-readable TOC), and one `.md` file per section.
+- `guide/` — Walkthrough section files: `index.md` (Table of Contents), `toc.json` (machine-readable TOC), `meta.json` (title/author/attribution), and one `.md` file per section.
 - `marked.js` — Vendored markdown parser (marked v14). Loaded locally to avoid mobile CDN loading issues.
 - `CNAME` — Contains `gamemds.org` — GitHub Pages custom domain.
 - `.nojekyll` — Empty file to disable Jekyll processing.
@@ -26,8 +26,9 @@ and deploy workflow. The converter tool lives in a separate repo:
 - `guide/index.md` must link to all section files with correct filenames
 - `reader.html` imports `marked.js` locally (path: `./marked.js`)
 - `CNAME` must always contain `gamemds.org`
-- `reader.html` title and author metadata in `#attribution` must match the walkthrough content
+- `reader.html` title and author metadata are loaded from `guide/meta.json`; the `#guide-header` and `#guide-attribution` elements are populated by JavaScript
 - Do not load marked from CDN — the local copy prevents mobile loading failures
+- `guide/meta.json` must contain `title`, `subtitle`, `author`, and `attributionHtml`
 
 ## Usage
 Deploy: push to `main` — the workflow auto-deploys.

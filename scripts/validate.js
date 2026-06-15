@@ -76,6 +76,13 @@ assert('guide/toc.json exists and is valid JSON', () => {
   if (!Array.isArray(tocData) || tocData.length === 0) throw new Error('toc.json must be a non-empty array');
 });
 
+assert('guide/meta.json exists and has required fields', () => {
+  fileExists(path.join(GUIDE_DIR, 'meta.json'));
+  const meta = JSON.parse(fs.readFileSync(path.join(GUIDE_DIR, 'meta.json'), 'utf8'));
+  if (typeof meta.title !== 'string' || !meta.title) throw new Error('meta.json missing title');
+  if (typeof meta.author !== 'string' || !meta.author) throw new Error('meta.json missing author');
+});
+
 let tocFiles;
 let flatToc;
 assert('toc.json nodes have required fields', () => {
@@ -144,6 +151,8 @@ assert('reader.html references required external assets', () => {
   if (!html.includes('assets/css/reader.css')) throw new Error('missing reader.css link');
   if (!html.includes('assets/js/reader.js')) throw new Error('missing reader.js script');
   if (!html.includes('Content-Security-Policy')) throw new Error('missing CSP');
+  if (!html.includes('id="guide-header"')) throw new Error('missing guide-header placeholder');
+  if (!html.includes('id="guide-attribution"')) throw new Error('missing guide-attribution placeholder');
 });
 
 // ── Summary ──

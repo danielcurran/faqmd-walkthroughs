@@ -5,8 +5,35 @@ marked.use({ renderer: { html: () => '' } });
 
 const $ = id => document.getElementById(id);
 let tocData = [], flatSections = [], currentIdx = -1, sidebarOpen = false;
+let guideMeta = {};
 
 function toggleSidebar() { sidebarOpen = !sidebarOpen; $('sidebar').classList.toggle('show', sidebarOpen); }
+
+async function loadMeta() {
+  try {
+    const res = await fetch('guide/meta.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    guideMeta = await res.json();
+  } catch (err) {
+    console.warn('faqmd: failed to load guide/meta.json', err.message);
+    guideMeta = {
+      title: 'Guide',
+      subtitle: 'Walkthrough',
+      author: 'Unknown Author',
+      attributionHtml: 'Converted with <a href="https://github.com/danielcurran/faqmd" target="_blank" rel="noopener">faqmd</a>'
+    };
+  }
+  document.title = guideMeta.title
+    ? guideMeta.title + (guideMeta.subtitle ? ' — ' + guideMeta.subtitle : '')
+    : document.title;
+  const headerText = guideMeta.title
+    ? (guideMeta.title + (guideMeta.subtitle ? ' ' + guideMeta.subtitle : ''))
+    : 'Guide & Walkthrough';
+  $('guide-header').textContent = headerText;
+  if (guideMeta.attributionHtml) {
+    $('guide-attribution').innerHTML = guideMeta.attributionHtml;
+  }
+}
 
 async function loadToc() {
   try {
@@ -188,4 +215,4 @@ $('content').addEventListener('click', e => {
   }
 });
 
-loadToc();
+loadMeta().then(() => loadToc());
