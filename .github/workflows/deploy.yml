@@ -1,4 +1,4 @@
-name: Deploy to faqmd.dev
+name: Deploy to gamemds.org
 
 on:
   push:

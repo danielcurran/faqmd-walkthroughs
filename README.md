@@ -1,4 +1,4 @@
-# faqmd-walkthroughs
+# gamemds
 
 Walkthrough content for [gamemds.org](https://gamemds.org).
 
@@ -11,7 +11,7 @@ walkthroughs lives in the separate **[faqmd](https://github.com/danielcurran/faq
 | Repo | Purpose |
 |---|---|
 | **[faqmd](https://github.com/danielcurran/faqmd)** | Converter tool + opencode agent skills |
-| **faqmd-walkthroughs** (this repo) | Walkthrough content hosted at [gamemds.org](https://gamemds.org) |
+| **gamemds** (this repo) | Walkthrough content hosted at [gamemds.org](https://gamemds.org) |
 
 ## Structure
 

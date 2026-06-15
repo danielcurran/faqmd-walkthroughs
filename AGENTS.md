@@ -1,4 +1,4 @@
-# faqmd-walkthroughs — gamemds.org Site
+# gamemds — gamemds.org Site
 
 ## Purpose
 Hosts GameFAQs walkthrough content served at [gamemds.org](https://gamemds.org).
