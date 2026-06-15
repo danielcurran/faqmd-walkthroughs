@@ -62,17 +62,28 @@ a:hover { text-decoration: underline; color: #f5e88a; }
   letter-spacing: 0.5px;
 }
 #home-link {
-  display: inline-block;
-  color: var(--ff-muted);
-  text-decoration: none;
-  font-size: 1.3rem;
-  margin-right: 8px;
-  transition: color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ff-gold);
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border: 1px solid rgba(237,215,88,0.3);
+  border-radius: 5px;
+  margin-right: 10px;
+  transition: all 0.15s;
   vertical-align: middle;
   line-height: 1;
+  text-decoration: none;
 }
 #home-link:hover {
-  color: var(--ff-gold);
+  color: #fff;
+  background: rgba(237,215,88,0.12);
+  border-color: var(--ff-gold);
+  text-decoration: none;
+}
+#home-icon {
+  font-size: 1.2rem;
 }
 
 /* --- Search --- */
@@ -470,7 +481,7 @@ a:hover { text-decoration: underline; color: #f5e88a; }
 <body>
 
 <div id="sidebar">
-  <h1><a href="index.html" id="home-link" title="Home">⌂</a> PSIV Guide & Walkthrough</h1>
+  <h1><a href="index.html" id="home-link" title="Back to gamemds.org home"><span id="home-icon">⌂</span> Home</a> PSIV Guide & Walkthrough</h1>
   <div id="search"><input type="text" placeholder="Search sections..." id="search-input"></div>
   <div id="toc"></div>
 </div>
