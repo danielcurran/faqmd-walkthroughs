@@ -19,7 +19,7 @@ and deploy workflow. The converter tool lives in a separate repo:
 
 ## Deploy
 - Workflow: `.github/workflows/deploy.yml`
-- Triggers: push to `main`, manual `workflow_dispatch`, daily at 06:00 UTC
+- Triggers: push to `main`, manual `workflow_dispatch`
 - Uses `peaceiris/actions-gh-pages@v4` with `force_orphan: true`
 
 ## Conventions

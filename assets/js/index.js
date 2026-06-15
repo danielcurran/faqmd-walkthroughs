@@ -1,4 +1,8 @@
 (async () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed', err));
+  }
+
   const card = document.querySelector('.guide-card');
   if (!card) return;
   card.querySelector('.guide-title').textContent = card.dataset.title;

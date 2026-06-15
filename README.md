@@ -31,7 +31,7 @@ Push to `main` triggers the deploy workflow (`.github/workflows/deploy.yml`),
 which deploys the repo root to the `gh-pages` branch. GitHub Pages then serves
 the content at [gamemds.org](https://gamemds.org).
 
-- **Trigger**: push to `main`, manual `workflow_dispatch`, or daily at 06:00 UTC
+- **Trigger**: push to `main` or manual `workflow_dispatch`
 - **Action**: `peaceiris/actions-gh-pages@v4` with `force_orphan: true`
 
 ## Adding or Updating a Walkthrough

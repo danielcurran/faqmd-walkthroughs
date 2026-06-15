@@ -47,6 +47,8 @@ function flattenToc(nodes, flat = []) {
 // ── Core files ──
 assert('index.html exists', () => fileExists(path.join(ROOT, 'index.html')));
 assert('reader.html exists', () => fileExists(path.join(ROOT, 'reader.html')));
+assert('404.html exists', () => fileExists(path.join(ROOT, '404.html')));
+assert('service worker exists', () => fileExists(path.join(ROOT, 'sw.js')));
 assert('CNAME exists', () => fileExists(path.join(ROOT, 'CNAME')));
 assert('CNAME contains gamemds.org', () => {
   const cname = fs.readFileSync(path.join(ROOT, 'CNAME'), 'utf8').trim();
