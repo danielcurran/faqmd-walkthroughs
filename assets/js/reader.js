@@ -135,6 +135,16 @@ function renderAchievements(sectionNum) {
   return '<div class="achievement-badges">' + achs.map(a => {
     const checked = achievementProgress[a.id] ? ' checked' : '';
     const medal = a.points >= 25 ? '🏅' : a.points >= 10 ? '🥈' : '🥉';
+    let hintsHtml = '';
+    if (a.communityTips && a.communityTips.length > 0) {
+      const first = a.communityTips[0];
+      const moreCount = a.communityTips.length - 1;
+      hintsHtml = `<div class="achievement-hint">💬 "${escHtml(first.text)}" — ${escHtml(first.user)}` +
+        (moreCount > 0 ? ` <span class="achievement-hint-more">${moreCount} more ▼</span>` : '') + '</div>' +
+        '<div class="achievement-hint-expanded">' +
+        a.communityTips.map(t => `<div class="achievement-tip">💬 "${escHtml(t.text)}" — ${escHtml(t.user)}</div>`).join('') +
+        '</div>';
+    }
     return `<div class="achievement-badge${a.missable ? ' missable' : ''}" data-id="${a.id}">
       <img src="${a.badgeUrl}" alt="${medal}" class="achievement-icon" loading="lazy">
       <div class="achievement-info">
@@ -142,8 +152,12 @@ function renderAchievements(sectionNum) {
         <span class="achievement-points">${a.points} pts</span>${a.missable ? '<span class="achievement-missable">⚠️ Missable</span>' : ''}
       </div>
       <input type="checkbox" class="achievement-check" data-id="${a.id}"${checked}>
-    </div>`;
+    </div>${hintsHtml}`;
   }).join('') + '</div>';
+}
+
+function escHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function renderMissableWarning(sectionNum) {
@@ -184,6 +198,20 @@ function saveProgress(gameId, progress) {
   localStorage.setItem(`ra-progress-${gameId}`, JSON.stringify(progress));
 }
 
+function wireAchievementHints() {
+  document.querySelectorAll('.achievement-hint-more').forEach(el => {
+    el.addEventListener('click', () => {
+      const container = el.closest('.achievement-badges');
+      const hint = el.closest('.achievement-hint');
+      if (!hint) return;
+      const expanded = hint.nextElementSibling;
+      if (!expanded || !expanded.classList.contains('achievement-hint-expanded')) return;
+      const isOpen = expanded.classList.toggle('open');
+      el.textContent = (parseInt(el.textContent) || 0) + ' more ' + (isOpen ? '▲' : '▼');
+    });
+  });
+}
+
 function enhanceChecklistPage() {
   if (!achievements) return;
   const buildTitleMap = () => {
@@ -194,6 +222,10 @@ function enhanceChecklistPage() {
     return map;
   };
   const titleMap = buildTitleMap();
+  const aById = {};
+  for (const a of achievements.achievements) {
+    aById[a.id] = a;
+  }
   const content = $('content');
   const listItems = content.querySelectorAll('li');
   listItems.forEach(li => {
@@ -217,6 +249,26 @@ function enhanceChecklistPage() {
     });
     li.insertBefore(checkbox, li.firstChild);
     li.classList.toggle('achievement-earned', checked);
+
+    const ach = aById[id];
+    if (ach && ach.communityTips && ach.communityTips.length > 0) {
+      const icon = document.createElement('span');
+      icon.className = 'achievement-hint-icon';
+      icon.textContent = '💬';
+      icon.title = ach.communityTips.length + ' player tip' + (ach.communityTips.length > 1 ? 's' : '');
+      const hintExpanded = document.createElement('div');
+      hintExpanded.className = 'achievement-hint-expanded checklist-tip';
+      hintExpanded.innerHTML = ach.communityTips.map(t =>
+        '<div class="achievement-tip">💬 "' + escHtml(t.text) + '" — ' + escHtml(t.user) + '</div>'
+      ).join('');
+      icon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hintExpanded.classList.toggle('open');
+        icon.textContent = hintExpanded.classList.contains('open') ? '💬▲' : '💬';
+      });
+      li.appendChild(icon);
+      li.parentNode.insertBefore(hintExpanded, li.nextSibling);
+    }
   });
   const missableTable = content.querySelector('table');
   if (missableTable) {
@@ -423,6 +475,7 @@ async function loadSection(idx) {
     $('content').innerHTML = html;
     bindAchievementCheckboxes();
     bindAchievementImages();
+    wireAchievementHints();
     if (s.file === 'achievements.md') enhanceChecklistPage();
     detectArtBlocks();
     updateNav();

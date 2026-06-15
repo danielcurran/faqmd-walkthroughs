@@ -463,6 +463,48 @@ a:hover { text-decoration: underline; color: #f5e88a; }
   margin-top: 2px;
 }
 
+/* Achievement community tips */
+.achievement-hint {
+  font-size: 0.72rem;
+  color: var(--ff-muted);
+  padding: 1px 0 3px 40px;
+  line-height: 1.4;
+}
+.achievement-hint-more {
+  color: var(--ff-gold);
+  cursor: pointer;
+  margin-left: 6px;
+  user-select: none;
+  font-size: 0.7rem;
+}
+.achievement-hint-more:hover {
+  text-decoration: underline;
+}
+.achievement-hint-expanded {
+  display: none;
+  padding: 2px 0 8px 40px;
+}
+.achievement-hint-expanded.open {
+  display: block;
+}
+.achievement-tip {
+  font-size: 0.72rem;
+  color: var(--ff-muted);
+  line-height: 1.5;
+  padding: 2px 0;
+}
+.achievement-hint-icon {
+  cursor: pointer;
+  margin-left: 6px;
+  font-size: 0.8rem;
+  user-select: none;
+  vertical-align: middle;
+}
+.achievement-hint-expanded.checklist-tip {
+  padding: 0 0 6px 32px;
+  margin-top: -2px;
+}
+
 /* --- Missable warning banner --- */
 .missable-warning {
   max-width: 800px;
@@ -688,6 +730,19 @@ a:hover { text-decoration: underline; color: #f5e88a; }
   }
   .achievement-info {
     font-size: 0.85rem;
+  }
+  .achievement-hint {
+    padding-left: 32px;
+    font-size: 0.68rem;
+  }
+  .achievement-hint-expanded {
+    padding-left: 32px;
+  }
+  .achievement-tip {
+    font-size: 0.68rem;
+  }
+  .achievement-hint-expanded.checklist-tip {
+    padding-left: 24px;
   }
   .missable-warning {
     font-size: 0.85rem;
