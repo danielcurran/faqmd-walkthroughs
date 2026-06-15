@@ -12,6 +12,8 @@ let achievements = null;
 let achievementMap = {};
 let missableCutoffs = {};
 let achievementProgress = {};
+let achievementFilter = 'all';
+let achievementPanelOpen = false;
 
 function toggleSidebar() { sidebarOpen = !sidebarOpen; $('sidebar').classList.toggle('show', sidebarOpen); }
 
@@ -152,6 +154,27 @@ function renderMissableWarning(sectionNum) {
   return `<div class="missable-warning">⚠️ <strong>${cutoffs.length} missable achievement${cutoffs.length > 1 ? 's' : ''}</strong> become${cutoffs.length === 1 ? 's' : ''} unavailable after this section: ${names}</div>`;
 }
 
+function renderUpcomingMissables(sectionNum) {
+  if (!achievements) return '';
+  const currentIdx = flatSections.findIndex(s => s.num === sectionNum);
+  if (currentIdx < 0) return '';
+  const upcoming = [];
+  for (let i = currentIdx + 1; i <= currentIdx + 2 && i < flatSections.length; i++) {
+    const nextSection = flatSections[i];
+    const cutoffs = missableCutoffs[nextSection.num];
+    if (cutoffs) {
+      for (const a of cutoffs) {
+        upcoming.push({ title: a.title, cutoff: nextSection.num, cutoffTitle: nextSection.title });
+      }
+    }
+  }
+  if (upcoming.length === 0) return '';
+  const items = upcoming.map(u =>
+    `${u.title} — after <a href="#${u.cutoff}" data-num="${u.cutoff}">${u.cutoff} ${u.cutoffTitle}</a>`
+  ).join('<br>');
+  return `<div class="upcoming-missable">💡 <strong>Heads up</strong> — missable achievement${upcoming.length > 1 ? 's' : ''} coming up:<br>${items}</div>`;
+}
+
 function loadProgress(gameId) {
   try {
     return JSON.parse(localStorage.getItem(`ra-progress-${gameId}`)) || {};
@@ -160,6 +183,57 @@ function loadProgress(gameId) {
 
 function saveProgress(gameId, progress) {
   localStorage.setItem(`ra-progress-${gameId}`, JSON.stringify(progress));
+}
+
+function enhanceChecklistPage() {
+  if (!achievements) return;
+  const buildTitleMap = () => {
+    const map = {};
+    for (const a of achievements.achievements) {
+      map[a.title.toLowerCase()] = a.id;
+    }
+    return map;
+  };
+  const titleMap = buildTitleMap();
+  const content = $('content');
+  const listItems = content.querySelectorAll('li');
+  listItems.forEach(li => {
+    const text = li.textContent || '';
+    const mdTitleMatch = text.match(/\*\*([^*]+)\*\*/);
+    if (!mdTitleMatch) return;
+    const title = mdTitleMatch[1].trim();
+    const id = titleMap[title.toLowerCase()];
+    if (id === undefined) return;
+    const checked = !!achievementProgress[id];
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.className = 'achievement-check';
+    checkbox.dataset.id = id;
+    checkbox.checked = checked;
+    checkbox.addEventListener('change', () => {
+      achievementProgress[id] = checkbox.checked;
+      saveProgress(achievements.gameId, achievementProgress);
+      updateAchievementSidebar();
+      li.classList.toggle('achievement-earned', checkbox.checked);
+    });
+    li.insertBefore(checkbox, li.firstChild);
+    li.classList.toggle('achievement-earned', checked);
+  });
+  const missableTable = content.querySelector('table');
+  if (missableTable) {
+    const rows = missableTable.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const firstCell = row.querySelector('td:first-child');
+      if (!firstCell) return;
+      const cellText = firstCell.textContent || '';
+      for (const a of achievements.achievements) {
+        if (cellText.includes(a.title)) {
+          if (achievementProgress[a.id]) row.classList.add('achievement-earned');
+          break;
+        }
+      }
+    });
+  }
 }
 
 function bindAchievementCheckboxes() {
@@ -182,31 +256,117 @@ function renderAchievementSidebar() {
   const earnedPts = achievements.achievements
     .filter(a => achievementProgress[a.id])
     .reduce((sum, a) => sum + a.points, 0);
-  const el = document.createElement('div');
-  el.className = 'achievement-sidebar';
-  el.id = 'achievement-sidebar';
-  el.innerHTML = `<div class="achievement-progress">${earned}/${total} achievements · ${earnedPts}/${points} pts</div>
-    <div style="margin-top:6px;font-size:0.8rem;color:var(--ff-muted)"><a href="#0.1" data-num="0.1" class="ach-checklist-link">View Checklist</a></div>`;
-  const toc = $('toc');
+  const pct = total ? Math.round((earned / total) * 100) : 0;
+
+  const types = ['all', 'missable', 'story', 'challenge', 'secret', 'progress', 'collectible'];
+  const typeLabels = { all: 'All', missable: 'Miss', story: 'Story', challenge: 'Chal', secret: 'Sec', progress: 'Prog', collectible: 'Col' };
+
+  const filterBtns = types.map(t => {
+    const active = achievementFilter === t ? ' class="ach-filter-active"' : '';
+    return `<button data-filter="${t}"${active}>${typeLabels[t]}</button>`;
+  }).join('');
+
+  let filteredAchievements = achievements.achievements;
+  if (achievementFilter !== 'all') {
+    filteredAchievements = achievementFilter === 'missable'
+      ? achievements.achievements.filter(a => a.missable)
+      : achievements.achievements.filter(a => a.type === achievementFilter);
+  }
+
+  const medal = pts => pts >= 25 ? '🏅' : pts >= 10 ? '🥈' : '🥉';
+  const achList = filteredAchievements.slice(0, 30).map(a => {
+    const checked = achievementProgress[a.id] ? ' checked' : '';
+    const missableTag = a.missable ? ' ⚠️' : '';
+    return `<div class="ach-mini-item${checked ? ' earned' : ''}" data-num="${a.section}" data-id="${a.id}">
+      <input type="checkbox" class="ach-mini-check" data-id="${a.id}"${checked}>
+      <span class="ach-mini-title">${medal(a.points)} ${a.title}${missableTag}</span>
+    </div>`;
+  }).join('');
+
+  const remaining = total - earned;
+  const progressLabel = earned > 0
+    ? `${earned}/${total} · ${earnedPts}/${points} pts · ${remaining} left`
+    : `${total} achievements · ${points} pts`;
+
   const existing = $('achievement-sidebar');
   if (existing) existing.remove();
+
+  const el = document.createElement('div');
+  el.className = 'achievement-sidebar' + (achievementPanelOpen ? ' open' : '');
+  el.id = 'achievement-sidebar';
+  el.innerHTML = `
+    <div class="ach-counter" id="ach-counter">🏅 ${progressLabel}</div>
+    <div class="ach-progress-bar"><div class="ach-progress-fill" style="width:${pct}%"></div></div>
+    <div class="ach-filters">${filterBtns}</div>
+    <div class="ach-mini-list">${achList}</div>
+    <div class="ach-checklist-link"><a href="#0.1" data-num="0.1">View Full Checklist</a></div>
+  `;
+
+  const toc = $('toc');
   toc.parentNode.insertBefore(el, toc.nextSibling);
-  el.querySelector('.ach-checklist-link').addEventListener('click', e => {
+
+  el.querySelector('#ach-counter').addEventListener('click', () => {
+    achievementPanelOpen = !achievementPanelOpen;
+    el.classList.toggle('open', achievementPanelOpen);
+  });
+
+  el.querySelector('.ach-filters').addEventListener('click', e => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    achievementFilter = btn.dataset.filter;
+    renderAchievementSidebar();
+  });
+
+  el.querySelectorAll('.ach-mini-item').forEach(item => {
+    item.addEventListener('click', e => {
+      if (e.target.closest('input')) return;
+      const num = item.dataset.num;
+      if (num) loadByNum(num);
+      if (sidebarOpen) toggleSidebar();
+    });
+  });
+
+  el.querySelectorAll('.ach-mini-check').forEach(cb => {
+    const id = parseInt(cb.dataset.id);
+    cb.addEventListener('change', () => {
+      achievementProgress[id] = cb.checked;
+      saveProgress(achievements.gameId, achievementProgress);
+      renderAchievementSidebar();
+    });
+  });
+
+  el.querySelector('.ach-checklist-link a').addEventListener('click', e => {
     e.preventDefault();
     loadByNum('0.1');
   });
 }
 
 function updateAchievementSidebar() {
-  const el = $('achievement-sidebar');
-  if (!el || !achievements) return;
+  if (!achievements) return;
   const total = achievements.totalAchievements;
   const earned = Object.values(achievementProgress).filter(Boolean).length;
   const points = achievements.totalPoints;
   const earnedPts = achievements.achievements
     .filter(a => achievementProgress[a.id])
     .reduce((sum, a) => sum + a.points, 0);
-  el.querySelector('.achievement-progress').textContent = `${earned}/${total} achievements · ${earnedPts}/${points} pts`;
+  const pct = total ? Math.round((earned / total) * 100) : 0;
+  const remaining = total - earned;
+  const counter = document.querySelector('#ach-counter');
+  if (counter) {
+    counter.textContent = earned > 0
+      ? `🏅 ${earned}/${total} · ${earnedPts}/${points} pts · ${remaining} left`
+      : `🏅 ${total} achievements · ${points} pts`;
+  }
+  const fill = document.querySelector('.ach-progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  document.querySelectorAll('.ach-mini-check').forEach(cb => {
+    const id = parseInt(cb.dataset.id);
+    cb.checked = !!achievementProgress[id];
+  });
+  document.querySelectorAll('.ach-mini-item').forEach(item => {
+    const id = parseInt(item.dataset.id);
+    item.classList.toggle('earned', !!achievementProgress[id]);
+  });
 }
 
 function renderToc(nodes) {
@@ -245,11 +405,13 @@ async function loadSection(idx) {
     let html = await marked.parse(md);
     const achHtml = renderAchievements(s.num);
     const warnHtml = renderMissableWarning(s.num);
-    if (achHtml || warnHtml) {
-      html = warnHtml + achHtml + html;
+    const upcomingHtml = renderUpcomingMissables(s.num);
+    if (achHtml || warnHtml || upcomingHtml) {
+      html = warnHtml + upcomingHtml + achHtml + html;
     }
     $('content').innerHTML = html;
     bindAchievementCheckboxes();
+    if (s.file === 'achievements.md') enhanceChecklistPage();
     detectArtBlocks();
     updateNav();
     highlightToc(s.num);

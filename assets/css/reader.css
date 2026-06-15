@@ -470,19 +470,160 @@ a:hover { text-decoration: underline; color: #f5e88a; }
   color: #e74c3c;
 }
 
+/* --- Upcoming missables callout --- */
+.upcoming-missable {
+  max-width: 800px;
+  margin: 0 auto 1rem;
+  background: rgba(237, 215, 88, 0.1);
+  border: 1px solid rgba(237, 215, 88, 0.3);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--ff-gold);
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+}
+.upcoming-missable strong {
+  color: var(--ff-gold);
+}
+.upcoming-missable a {
+  color: var(--ff-gold);
+  text-decoration: underline;
+}
+.upcoming-missable a:hover {
+  color: #f5e88a;
+}
+
 /* --- Achievement sidebar section --- */
 .achievement-sidebar {
-  padding: 10px 16px;
+  padding: 0;
   border-top: 1px solid var(--ff-border);
   font-size: 0.85rem;
   font-family: system-ui, sans-serif;
 }
-.achievement-progress {
+.ach-counter {
+  padding: 10px 16px;
+  color: var(--ff-gold);
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+.ach-counter:hover {
+  background: rgba(237,215,88,0.06);
+}
+.ach-progress-bar {
+  height: 3px;
+  background: rgba(237,215,88,0.15);
+  margin: 0 16px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ach-progress-fill {
+  height: 100%;
+  background: var(--ff-gold);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+.ach-filters {
+  display: none;
+  padding: 8px 12px;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.achievement-sidebar.open .ach-filters {
+  display: flex;
+}
+.ach-filters button {
+  background: rgba(237,215,88,0.08);
+  border: 1px solid rgba(237,215,88,0.2);
+  color: var(--ff-muted);
+  padding: 3px 7px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-family: system-ui, sans-serif;
+  transition: all 0.15s;
+}
+.ach-filters button:hover {
+  background: rgba(237,215,88,0.15);
+  color: var(--ff-text);
+}
+.ach-filters button.ach-filter-active {
+  background: rgba(237,215,88,0.2);
+  border-color: var(--ff-gold);
   color: var(--ff-gold);
   font-weight: 600;
 }
-.achievement-sidebar a {
+.ach-mini-list {
+  display: none;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 4px 0;
+}
+.achievement-sidebar.open .ach-mini-list {
+  display: block;
+}
+.ach-mini-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 16px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--ff-muted);
+  transition: all 0.1s;
+}
+.ach-mini-item:hover {
+  background: rgba(237,215,88,0.08);
+  color: var(--ff-text);
+}
+.ach-mini-item.earned {
+  opacity: 0.45;
+}
+.ach-mini-check {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  accent-color: var(--ff-gold);
+  cursor: pointer;
+}
+.ach-mini-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ach-checklist-link {
+  display: none;
+  padding: 8px 16px 10px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.achievement-sidebar.open .ach-checklist-link {
+  display: block;
+}
+.ach-checklist-link a {
   font-size: 0.8rem;
+  color: var(--ff-muted);
+}
+.ach-checklist-link a:hover {
+  color: var(--ff-gold);
+}
+
+/* --- Checklist page interactivity --- */
+#content li.achievement-earned {
+  opacity: 0.5;
+  text-decoration: line-through;
+  text-decoration-color: var(--ff-muted);
+}
+#content li .achievement-check {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--ff-gold);
+  cursor: pointer;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+#content table tr.achievement-earned {
+  opacity: 0.4;
 }
 
 /* --- Attribution --- */
@@ -551,6 +692,11 @@ a:hover { text-decoration: underline; color: #f5e88a; }
     font-size: 0.85rem;
   }
   .missable-warning {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    max-width: none;
+  }
+  .upcoming-missable {
     font-size: 0.85rem;
     padding: 0.5rem 0.75rem;
     max-width: none;

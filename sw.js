@@ -1,6 +1,6 @@
 // Service worker for gamemds.org — enables offline reading after first load.
 
-const CACHE_NAME = 'gamemds-v1';
+const CACHE_NAME = 'gamemds-v2';
 
 const STATIC_ASSETS = [
   '/',
