@@ -19,8 +19,10 @@ walkthroughs lives in the separate **[faqmd](https://github.com/danielcurran/faq
 |---|---|
 | `guides.json` | Manifest of available walkthroughs |
 | `guide/` | Walkthrough section files for the default/legacy guide |
+| `guide/achievements.json` | RetroAchievements data — section mapping, missable cutoffs, strategic notes |
+| `guide/achievements.md` | Auto-generated checklist with missable table + by-section view |
 | `guides/<slug>/` | Walkthrough section files for additional games |
-| `reader.html` | Walkthrough viewer app — renders guide sections with sidebar navigation and search |
+| `reader.html` | Walkthrough viewer app — renders guide sections with sidebar navigation, search, achievement badges, missable warnings, and progress tracking |
 | `index.html` | Landing page at [gamemds.org](https://gamemds.org) |
 | `marked.js` | Vendored markdown parsing library (loaded locally, not from CDN) |
 | `CNAME` | Custom domain — `gamemds.org` |
@@ -44,20 +46,41 @@ the content at [gamemds.org](https://gamemds.org).
    cd faqmd
    node scripts/convert.js "https://gamefaqs.gamespot.com/.../faqs/12345?print=1"
    ```
-2. Optionally annotate with RetroAchievements via the opencode agent skill
+2. Optionally annotate with RetroAchievements via the opencode agent skill (produces `achievements.json`)
 3. Optionally run quality passes:
    ```bash
    # (in opencode)
    "Run reformat-review on walkthrough.md"
    "Run art-modernize on walkthrough.md"
    ```
-4. Split into sections:
+4. Split into sections (also generates `achievements.md` + updates `toc.json` if `achievements.json` exists):
    ```bash
    node scripts/split-guide.js walkthrough.md guide/
    ```
 5. Copy the generated `guide/` directory into this repo under `guides/<slug>/` (or replace `guide/` for the legacy/default guide)
-6. Add the new guide to `guides.json` with `slug`, `title`, `subtitle`, `author`, `desc`, and `path`
+6. Add the new guide to `guides.json` with `slug`, `title`, `subtitle`, `author`, `desc`, and `path`. If the guide has RetroAchievements data, set `"hasAchievements": true`:
+   ```json
+   {
+     "slug": "my-game",
+     "title": "My Game",
+     "subtitle": "Guide and Walkthrough",
+     "author": "Author",
+     "desc": "Guide and Walkthrough",
+     "path": "guides/my-game",
+     "hasAchievements": true
+   }
+   ```
 7. Commit and push — the site auto-deploys
+
+## Reader App Achievement Features
+
+When a guide has `"hasAchievements": true` in `guides.json`, the reader app:
+
+- **Inline badges** — Achievement badges (icon, title, points, missable indicator) appear at the top of each section that has associated achievements
+- **Checkboxes** — Click a checkbox to mark an achievement as earned; progress persists in localStorage across sessions
+- **Sidebar counter** — Shows "earned / total" progress in the sidebar below the table of contents
+- **Missable warnings** — Yellow/red banners at the top of sections where missable achievements become unavailable
+- **Checklist page** — Section `0.1 Achievement Checklist` in the TOC shows all achievements grouped by section with a missable table sorted by cutoff
 
 ## Related
 
