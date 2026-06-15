@@ -4,13 +4,9 @@
 
 The following lists detail the statistics and required EXP for each character, based upon their current Level. For the moment, these lists only show the statistics up to the last Level that requires less than a million EXP, but I will add the remaining entries once I have obtained them all.
 
-
-
 <!-- MIXED -->
 
 Chaz - Initial Technique: RES Skill 1 Skill 2 Skill 3 Skill 4 Skill 5 EARTH CROSSCUT AIRSLASH RAYBLADE EXPLODE
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -71,13 +67,9 @@ Chaz - Initial Technique: RES Skill 1 Skill 2 Skill 3 Skill 4 Skill 5 EARTH CROS
        |52 |956006 |333 |183 |77 |61 |67 |62 |      |25 19 13  9  5 |
 ```
 
-
-
 <!-- MIXED -->
 
 Alys - Initial Techniques: FOI,SHIFT,SANER Skill 1 Skill 2 Skill 3 VORTEX MOONSHAD DEATH
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -128,13 +120,9 @@ Alys - Initial Techniques: FOI,SHIFT,SANER Skill 1 Skill 2 Skill 3 VORTEX MOONSH
        |48 |964406 |312 |227 |66 |60 |72 |72 |      |19 15 12 |
 ```
 
-
-
 <!-- MIXED -->
 
 Hahn - Initial Techniques: RES,GELUN Skill 1 Skill 2 Skill 3 VISION ASTRAL ELIMINAT
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -194,13 +182,9 @@ Hahn - Initial Techniques: RES,GELUN Skill 1 Skill 2 Skill 3 VISION ASTRAL ELIMI
        |51 |987259 |277 |279 |47 |79 |48 |72 |      |23 11  6 |
 ```
 
-
-
 <!-- MIXED -->
 
 Rune - Initial Techniques: FOI,WAT,GRA,AROWS,HINAS,RYUKA Skill 1 Skill 2 Skill 3 Skill 4 Skill 5 Skill 6 Skill 7 FLAELI HEWN DIEM TANDLE EFESS NEGATIS LEGEON
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -240,13 +224,9 @@ Rune - Initial Techniques: FOI,WAT,GRA,AROWS,HINAS,RYUKA Skill 1 Skill 2 Skill 3
        |47 |971824 |214 |357 |37 |93 |55 |63 |      |26 16 10  9 12  7  6 |
 ```
 
-
-
 <!-- MIXED -->
 
 Gryz - Initial Technique: BROSE Skill 1 Skill 2 Skill 3 CRASH WAR CRY SWEEPING
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -304,13 +284,9 @@ Gryz - Initial Technique: BROSE Skill 1 Skill 2 Skill 3 CRASH WAR CRY SWEEPING
        |54 |969695 |409 | 98 |99 |53 |47 |65 |29 21 18 |
 ```
 
-
-
 <!-- MIXED -->
 
 Rika - Initial Technique: RES Skill 1 Skill 2 Skill 3 Skill 4 ILLUSION DBLSLASH ELIMINAT DISRUPT
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -353,8 +329,6 @@ Rika - Initial Technique: RES Skill 1 Skill 2 Skill 3 Skill 4 ILLUSION DBLSLASH 
        |34 |212958 |206 |133 |46 |34 |51 |51 |      |17 12 11  6 |
 ```
 
-
-
 <!-- MIXED -->
 
 <!-- MODERNIZE:unknown -->
@@ -384,13 +358,9 @@ Rika - Initial Technique: RES Skill 1 Skill 2 Skill 3 Skill 4 ILLUSION DBLSLASH 
        |56 |968599 |332 |197 |68 |53 |73 |81 |      |24 19 21 13 |
 ```
 
-
-
 <!-- MIXED -->
 
 Demi - Skill 1 Skill 2 Skill 3 Skill 4 Skill 5 Skill 6* RECOVER STASISBM SPARK BARRIER MEDIC PW PHONON
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -438,13 +408,9 @@ Demi - Skill 1 Skill 2 Skill 3 Skill 4 Skill 5 Skill 6* RECOVER STASISBM SPARK B
        |50 |970203 |344 |82 |63 |77 |26 18 16 12  9 17* |
 ```
 
-
-
 <!-- MIXED -->
 
 Wren - Skill 1 Skill 2 Skill 3 Skill 4 Skill 5* Skill 6* Skill 7* RECOVER FLARE SPARK BARRIER HIJAMMER BURSTROC POSIBOLT
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -483,13 +449,9 @@ Wren - Skill 1 Skill 2 Skill 3 Skill 4 Skill 5* Skill 6* Skill 7* RECOVER FLARE 
        |49 |988598 |486 |91 |62 |68 |31 26 17 13 13* 10*  4* |
 ```
 
-
-
 <!-- MIXED -->
 
 Raja - Initial Techniques: RES,ANTI,RIMPA,SAR,AROWS,RIMIT,GIRES,SEALS,REVER Skill 1 Skill 2 Skill 3 Skill 4 Skill 5 BLESSING HOLYWORD ATARAXIA MIRACLE ST. FIRE
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -521,13 +483,9 @@ Raja - Initial Techniques: RES,ANTI,RIMPA,SAR,AROWS,RIMIT,GIRES,SEALS,REVER Skil
        |47 |938297 |209 |298 |56 |88 |40 |53 |      |22 16  7  9  8 |
 ```
 
-
-
 <!-- MIXED -->
 
 Kyra - Initial Techniques: RES,FOI,ANTI,RIMPA,GIRES,GIFOI,GRA Skill 1 Skill 2 Skill 3 Skill 4 Skill 5 Skill 6 Skill 7 MEDICE FLAELI TELELE HEWN WARLA BINDWA TANDLE
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -559,13 +517,9 @@ Kyra - Initial Techniques: RES,FOI,ANTI,RIMPA,GIRES,GIFOI,GRA Skill 1 Skill 2 Sk
        |49 |950578 |290 |211 |63 |75 |58 |69 |      |27 24 17 11  8  6  4 |
 ```
 
-
-
 <!-- MIXED -->
 
 Seth - Skill 1 Skill 2 Skill 3 Skill 4 SHADOW CORRSION MINDBLST DTHSPELL
-
-
 
 <!-- MODERNIZE:unknown -->
 
@@ -585,7 +539,5 @@ Seth - Skill 1 Skill 2 Skill 3 Skill 4 SHADOW CORRSION MINDBLST DTHSPELL
        |45 |910430 |291 |61 |76 |63 |62 |26 18 13  9 |
        |46 |973203 |297 |62 |77 |64 |64 |26 18 13  9 |
 ```
-
-
 
 * Skills marked with asterisks are learned by the android installing them. The numbers given for the stock of the Skill only apply once the Skill has been acquired.

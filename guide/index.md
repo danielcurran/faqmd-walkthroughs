@@ -1,4 +1,4 @@
-# Phantasy Star IV
+# Introduction
 
 > By Seb Holt (Sir Pobalot) — Converted from GameFAQs
 
