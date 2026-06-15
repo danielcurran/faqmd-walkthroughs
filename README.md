@@ -22,7 +22,7 @@ walkthroughs lives in the separate **[faqmd](https://github.com/danielcurran/faq
 | `guide/achievements.json` | RetroAchievements data — section mapping, missable cutoffs, strategic notes |
 | `guide/achievements.md` | Auto-generated checklist with missable table + by-section view |
 | `guides/<slug>/` | Walkthrough section files for additional games |
-| `reader.html` | Walkthrough viewer app — renders guide sections with sidebar navigation, search, achievement badges, missable warnings, and progress tracking |
+| `reader.html` | Walkthrough viewer app — renders guide sections with sidebar navigation, search, and a full achievement panel (badges, missable warnings, upcoming cutoff alerts, type filters, progress tracking, interactive checklist) |
 | `index.html` | Landing page at [gamemds.org](https://gamemds.org) |
 | `marked.js` | Vendored markdown parsing library (loaded locally, not from CDN) |
 | `CNAME` | Custom domain — `gamemds.org` |
@@ -77,9 +77,10 @@ the content at [gamemds.org](https://gamemds.org).
 When a guide has `"hasAchievements": true` in `guides.json`, the reader app:
 
 - **Inline badges** — Achievement badges (icon, title, points, missable indicator) appear at the top of each section that has associated achievements
-- **Checkboxes** — Click a checkbox to mark an achievement as earned; progress persists in localStorage across sessions
-- **Sidebar counter** — Shows "earned / total" progress in the sidebar below the table of contents
-- **Missable warnings** — Yellow/red banners at the top of sections where missable achievements become unavailable
+- **Interactive checkboxes** — Click a checkbox to mark an achievement as earned; progress persists in localStorage across sessions. Checkboxes on the checklist page (section 0.1) are fully interactive and synced.
+- **Sidebar filter panel** — Collapsible panel below the TOC with a progress bar, type filter buttons (All/Missable/Story/Challenge/Secret/Progress/Collectible), scrollable mini achievement list, and click-to-navigate links
+- **Missable warnings** — Red banners at the top of sections where missable achievements become unavailable
+- **Upcoming missables callout** — Amber heads-up 1-2 sections before a cutoff, alerting the player to achievements that will expire soon
 - **Checklist page** — Section `0.1 Achievement Checklist` in the TOC shows all achievements grouped by section with a missable table sorted by cutoff
 
 ## Related
