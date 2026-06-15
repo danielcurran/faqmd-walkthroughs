@@ -8,6 +8,11 @@ let guides = [], activeGuide = null, guideBase = 'guide';
 let tocData = [], flatSections = [], currentIdx = -1, sidebarOpen = false;
 let guideMeta = {};
 
+let achievements = null;
+let achievementMap = {};
+let missableCutoffs = {};
+let achievementProgress = {};
+
 function toggleSidebar() { sidebarOpen = !sidebarOpen; $('sidebar').classList.toggle('show', sidebarOpen); }
 
 function getQueryParam(name) {
@@ -88,6 +93,122 @@ async function loadToc() {
   loadSection(idx >= 0 ? idx : 0);
 }
 
+async function loadAchievements() {
+  if (!activeGuide.hasAchievements) return;
+  try {
+    const res = await fetch(guideBase + '/achievements.json');
+    if (!res.ok) return;
+    achievements = await res.json();
+    achievementMap = buildAchievementMap(achievements);
+    missableCutoffs = buildMissableCutoffs(achievements);
+    achievementProgress = loadProgress(achievements.gameId);
+    renderAchievementSidebar();
+  } catch { /* achievements.json is optional */ }
+}
+
+function buildAchievementMap(ach) {
+  const map = {};
+  for (const a of ach.achievements) {
+    if (!map[a.section]) map[a.section] = [];
+    map[a.section].push(a);
+  }
+  for (const key of Object.keys(map)) {
+    map[key].sort((a, b) => b.points - a.points || a.title.localeCompare(b.title));
+  }
+  return map;
+}
+
+function buildMissableCutoffs(ach) {
+  const cutoffs = {};
+  for (const a of ach.achievements) {
+    if (a.missable && a.missableCutoffSection) {
+      if (!cutoffs[a.missableCutoffSection]) cutoffs[a.missableCutoffSection] = [];
+      cutoffs[a.missableCutoffSection].push(a);
+    }
+  }
+  return cutoffs;
+}
+
+function renderAchievements(sectionNum) {
+  const achs = achievementMap[sectionNum];
+  if (!achs || achs.length === 0) return '';
+  return '<div class="achievement-badges">' + achs.map(a => {
+    const checked = achievementProgress[a.id] ? ' checked' : '';
+    return `<div class="achievement-badge${a.missable ? ' missable' : ''}" data-id="${a.id}">
+      <img src="${a.badgeUrl}" alt="" class="achievement-icon" loading="lazy" onerror="this.style.display='none'">
+      <div class="achievement-info">
+        <strong>${a.title}</strong> — ${a.description}
+        <span class="achievement-points">${a.points} pts</span>${a.missable ? '<span class="achievement-missable">⚠️ Missable</span>' : ''}
+      </div>
+      <input type="checkbox" class="achievement-check" data-id="${a.id}"${checked}>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function renderMissableWarning(sectionNum) {
+  const cutoffs = missableCutoffs[sectionNum];
+  if (!cutoffs || cutoffs.length === 0) return '';
+  const names = cutoffs.map(a => a.title).join(', ');
+  return `<div class="missable-warning">⚠️ <strong>${cutoffs.length} missable achievement${cutoffs.length > 1 ? 's' : ''}</strong> become${cutoffs.length === 1 ? 's' : ''} unavailable after this section: ${names}</div>`;
+}
+
+function loadProgress(gameId) {
+  try {
+    return JSON.parse(localStorage.getItem(`ra-progress-${gameId}`)) || {};
+  } catch { return {}; }
+}
+
+function saveProgress(gameId, progress) {
+  localStorage.setItem(`ra-progress-${gameId}`, JSON.stringify(progress));
+}
+
+function bindAchievementCheckboxes() {
+  document.querySelectorAll('.achievement-check').forEach(cb => {
+    const id = parseInt(cb.dataset.id);
+    cb.checked = !!achievementProgress[id];
+    cb.addEventListener('change', () => {
+      achievementProgress[id] = cb.checked;
+      saveProgress(achievements.gameId, achievementProgress);
+      updateAchievementSidebar();
+    });
+  });
+}
+
+function renderAchievementSidebar() {
+  if (!achievements) return;
+  const total = achievements.totalAchievements;
+  const earned = Object.values(achievementProgress).filter(Boolean).length;
+  const points = achievements.totalPoints;
+  const earnedPts = achievements.achievements
+    .filter(a => achievementProgress[a.id])
+    .reduce((sum, a) => sum + a.points, 0);
+  const el = document.createElement('div');
+  el.className = 'achievement-sidebar';
+  el.id = 'achievement-sidebar';
+  el.innerHTML = `<div class="achievement-progress">${earned}/${total} achievements · ${earnedPts}/${points} pts</div>
+    <div style="margin-top:6px;font-size:0.8rem;color:var(--ff-muted)"><a href="#0.1" data-num="0.1" class="ach-checklist-link">View Checklist</a></div>`;
+  const toc = $('toc');
+  const existing = $('achievement-sidebar');
+  if (existing) existing.remove();
+  toc.parentNode.insertBefore(el, toc.nextSibling);
+  el.querySelector('.ach-checklist-link').addEventListener('click', e => {
+    e.preventDefault();
+    loadByNum('0.1');
+  });
+}
+
+function updateAchievementSidebar() {
+  const el = $('achievement-sidebar');
+  if (!el || !achievements) return;
+  const total = achievements.totalAchievements;
+  const earned = Object.values(achievementProgress).filter(Boolean).length;
+  const points = achievements.totalPoints;
+  const earnedPts = achievements.achievements
+    .filter(a => achievementProgress[a.id])
+    .reduce((sum, a) => sum + a.points, 0);
+  el.querySelector('.achievement-progress').textContent = `${earned}/${total} achievements · ${earnedPts}/${points} pts`;
+}
+
 function renderToc(nodes) {
   if (!nodes || nodes.length === 0) {
     $('toc').innerHTML = '<p style="padding:20px;color:var(--ff-muted);font-size:0.85rem;text-align:center">Guide not available.</p>';
@@ -121,7 +242,14 @@ async function loadSection(idx) {
     const res = await fetch(guideBase + '/' + s.file);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     let md = await res.text();
-    $('content').innerHTML = await marked.parse(md);
+    let html = await marked.parse(md);
+    const achHtml = renderAchievements(s.num);
+    const warnHtml = renderMissableWarning(s.num);
+    if (achHtml || warnHtml) {
+      html = warnHtml + achHtml + html;
+    }
+    $('content').innerHTML = html;
+    bindAchievementCheckboxes();
     detectArtBlocks();
     updateNav();
     highlightToc(s.num);
@@ -240,7 +368,7 @@ $('content').addEventListener('click', e => {
   }
 });
 
-loadGuides().then(() => loadMeta()).then(() => loadToc());
+loadGuides().then(() => loadMeta()).then(() => loadToc()).then(() => loadAchievements());
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed', err));

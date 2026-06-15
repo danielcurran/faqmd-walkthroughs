@@ -5,6 +5,7 @@
     "subtitle": "Guide and Walkthrough",
     "author": "Seb Holt (Sir Pobalot)",
     "desc": "Guide and Walkthrough",
-    "path": "guide"
+    "path": "guide",
+    "hasAchievements": true
   }
 ]
