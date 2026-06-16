@@ -7,7 +7,7 @@
 
 ## Table of Contents
 
-- [0. VERSION HISTORY](0-version-history.md)
+- [0. VERSION HISTORY](1-introduction.md)
 - [1. INTRODUCTION](1-introduction.md)
 - [2. WALKTHROUGH](2.1-introduction.md)
   - [2.1. Introduction](2.1-introduction.md)
@@ -88,7 +88,7 @@
 
 ## All Sections
 
-- [0. VERSION HISTORY](0-version-history.md)
+- [0. VERSION HISTORY](1-introduction.md)
 - [1. INTRODUCTION](1-introduction.md)
 - [2. WALKTHROUGH](2.1-introduction.md)
   - [2.1. Introduction](2.1-introduction.md)
