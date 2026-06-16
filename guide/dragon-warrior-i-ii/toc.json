@@ -1,12 +1,5 @@
 [
   {
-    "num": "0.1",
-    "title": "Achievement Checklist",
-    "file": "achievements.md",
-    "depth": 0,
-    "children": []
-  },
-  {
     "num": "0",
     "title": "VERSION HISTORY",
     "file": "0-version-history.md",

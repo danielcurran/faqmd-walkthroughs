@@ -1,6 +1,6 @@
 # VERSION HISTORY
 
-> By Seb Holt (Sir Pobalot) — Converted from GameFAQs
+> By Young-Gamer — Converted from GameFAQs
 
 > 💡 **Tip:** Press `t` in the GitHub app or website to search across all section files.
 
