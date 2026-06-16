@@ -7,5 +7,14 @@
     "desc": "Guide and Walkthrough",
     "path": "guide",
     "hasAchievements": true
+  },
+  {
+    "slug": "dragon-warrior-i-ii",
+    "title": "Dragon Warrior I & II",
+    "subtitle": "Guide and Walkthrough",
+    "author": "Seb Holt (Sir Pobalot)",
+    "desc": "Guide and Walkthrough",
+    "path": "guide/dragon-warrior-i-ii",
+    "hasAchievements": true
   }
 ]
