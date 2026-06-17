@@ -14,6 +14,7 @@ let missableCutoffs = {};
 let achievementProgress = {};
 let achievementFilter = 'all';
 let achievementPanelOpen = false;
+let lastFocusedEl = null;
 
 function toggleSidebar() { sidebarOpen = !sidebarOpen; $('sidebar').classList.toggle('show', sidebarOpen); }
 
@@ -158,6 +159,125 @@ function renderAchievements(sectionNum) {
 
 function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function initAchievementModal() {
+  if ($('achievement-modal')) return;
+  const modal = document.createElement('div');
+  modal.id = 'achievement-modal';
+  modal.className = 'ach-modal-overlay';
+  modal.innerHTML = `
+    <div class="ach-modal-backdrop"></div>
+    <div class="ach-modal-dialog">
+      <button class="ach-modal-close" aria-label="Close">&times;</button>
+      <div class="ach-modal-body" id="ach-modal-body"></div>
+    </div>
+  `;
+  modal.addEventListener('click', e => {
+    if (e.target.classList.contains('ach-modal-backdrop') || e.target.classList.contains('ach-modal-close')) {
+      closeAchievementModal();
+    }
+  });
+  document.body.appendChild(modal);
+  if (!document.body.classList.contains('modal-open-ready')) {
+    document.body.classList.add('modal-open-ready');
+  }
+}
+
+function openAchievementModal(id) {
+  if (!achievements) return;
+  const a = achievements.achievements.find(x => x.id === id);
+  if (!a) return;
+  lastFocusedEl = document.activeElement;
+
+  const medal = a.points >= 25 ? '🏅' : a.points >= 10 ? '🥈' : '🥉';
+  const checked = achievementProgress[a.id] ? ' checked' : '';
+  const typeClass = 'ach-type-' + (a.type || 'progress');
+  const typeLabel = a.type ? a.type.charAt(0).toUpperCase() + a.type.slice(1) : 'Progress';
+
+  let missableHtml = '';
+  if (a.missable) {
+    missableHtml = `<div class="ach-modal-missable">⚠️ Missable` +
+      (a.missableCutoff ? ` — becomes unavailable after: ${escHtml(a.missableCutoff)}` : '') +
+      (a.missableCutoffSection ? ` <a href="#${a.missableCutoffSection}" data-num="${a.missableCutoffSection}">§${a.missableCutoffSection}</a>` : '') +
+      '</div>';
+  }
+
+  let notesHtml = '';
+  if (a.notes) {
+    notesHtml = `<div class="ach-modal-notes"><strong>Strategy:</strong> ${escHtml(a.notes)}</div>`;
+  }
+
+  let tipsHtml = '';
+  if (a.communityTips && a.communityTips.length > 0) {
+    tipsHtml = `<div class="ach-modal-tips">
+      <div class="ach-modal-tips-title">Community Tips (${a.communityTips.length})</div>
+      ${a.communityTips.map(t => `<div class="ach-modal-tip">💬 "${escHtml(t.text)}" <span class="ach-modal-tip-user">— ${escHtml(t.user)}</span></div>`).join('')}
+    </div>`;
+  }
+
+  let sectionHtml = '';
+  if (a.section) {
+    const sec = flatSections.find(s => s.num === a.section);
+    const secTitle = sec ? sec.title : a.section;
+    sectionHtml = `<div class="ach-modal-section">
+      <a href="#${a.section}" data-num="${a.section}" class="ach-modal-section-link">📖 §${a.section} ${secTitle}</a>
+    </div>`;
+  }
+
+  const ongoingTag = a.ongoing ? ' 🔓 Ongoing' : '';
+
+  $('ach-modal-body').innerHTML = `
+    <div class="ach-modal-header">
+      <img src="${a.badgeUrl}" alt="${medal}" class="ach-modal-icon" loading="lazy" onerror="this.replaceWith(document.createElement('span'))">
+      <div class="ach-modal-header-text">
+        <div class="ach-modal-title">${escHtml(a.title)}${ongoingTag}</div>
+        <div class="ach-modal-meta">
+          <span class="ach-modal-points">${medal} ${a.points} pts</span>
+          <span class="ach-modal-type ${typeClass}">${typeLabel}</span>
+        </div>
+      </div>
+    </div>
+    <div class="ach-modal-description">${escHtml(a.description)}</div>
+    ${missableHtml}
+    ${notesHtml}
+    ${tipsHtml}
+    ${sectionHtml}
+    <div class="ach-modal-actions">
+      <label class="ach-modal-check-label">
+        <input type="checkbox" class="achievement-check ach-modal-check" data-id="${a.id}"${checked}>
+        <span>Mark as earned</span>
+      </label>
+    </div>
+  `;
+
+  const overlay = $('achievement-modal');
+  overlay.classList.add('open');
+  document.body.classList.add('ach-modal-scroll-lock');
+
+  const modalCheck = overlay.querySelector('.ach-modal-check');
+  if (modalCheck) {
+    modalCheck.addEventListener('change', () => {
+      achievementProgress[a.id] = modalCheck.checked;
+      saveProgress(achievements.gameId, achievementProgress);
+      updateAchievementSidebar();
+      const inlineChecks = document.querySelectorAll(`.achievement-check[data-id="${a.id}"]`);
+      inlineChecks.forEach(cb => { cb.checked = modalCheck.checked; });
+    });
+  }
+  const closeBtn = overlay.querySelector('.ach-modal-close');
+  if (closeBtn) closeBtn.focus();
+}
+
+function closeAchievementModal() {
+  const overlay = $('achievement-modal');
+  if (!overlay) return;
+  overlay.classList.remove('open');
+  document.body.classList.remove('ach-modal-scroll-lock');
+  if (lastFocusedEl) {
+    lastFocusedEl.focus();
+    lastFocusedEl = null;
+  }
 }
 
 function renderMissableWarning(sectionNum) {
@@ -577,16 +697,42 @@ $('breadcrumb').addEventListener('click', e => {
 });
 
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const modal = $('achievement-modal');
+    if (modal && modal.classList.contains('open')) {
+      closeAchievementModal();
+      return;
+    }
+  }
   if (e.target.closest('input')) return;
   if (e.key === 'ArrowLeft') goPrev();
   if (e.key === 'ArrowRight') goNext();
 });
 
 $('content').addEventListener('click', e => {
+  // Achievement badge click -> open modal (ignore checkbox clicks)
+  const badge = e.target.closest('.achievement-badge');
+  if (badge && !e.target.closest('.achievement-check') && !e.target.closest('.achievement-hint-more')) {
+    const id = parseInt(badge.dataset.id);
+    if (id) {
+      initAchievementModal();
+      openAchievementModal(id);
+    }
+    return;
+  }
+
   const a = e.target.closest('a');
   if (!a) return;
   const href = a.getAttribute('href');
-  if (!href || href.startsWith('http') || href.startsWith('#')) return;
+  if (!href || href.startsWith('http') || href.startsWith('#')) {
+    // Internal section links within the modal
+    if (href && href.startsWith('#') && a.dataset.num) {
+      e.preventDefault();
+      closeAchievementModal();
+      loadByNum(a.dataset.num);
+    }
+    return;
+  }
   if (href.endsWith('.md')) {
     e.preventDefault();
     const file = href.replace(/^.*\//, '');
