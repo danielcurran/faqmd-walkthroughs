@@ -1,5 +1,12 @@
 [
   {
+    "num": "0.1",
+    "title": "Achievement Checklist",
+    "file": "achievements.md",
+    "depth": 0,
+    "children": []
+  },
+  {
     "num": "1",
     "title": "CONTROLS",
     "file": "1-controls.md",
