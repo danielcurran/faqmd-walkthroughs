@@ -9,6 +9,15 @@
     "hasAchievements": true
   },
   {
+    "slug": "final-fantasy-v-advance",
+    "title": "Final Fantasy V Advance (GBA)",
+    "subtitle": "Guide and Walkthrough",
+    "author": "Djibriel",
+    "desc": "Guide and Walkthrough",
+    "path": "guide/final-fantasy-v-advance",
+    "hasAchievements": false
+  },
+  {
     "slug": "chrono-cross",
     "title": "Chrono Cross (PS)",
     "subtitle": "Guide and Walkthrough",
