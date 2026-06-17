@@ -9,6 +9,15 @@
     "hasAchievements": true
   },
   {
+    "slug": "chrono-cross",
+    "title": "Chrono Cross (PS)",
+    "subtitle": "Guide and Walkthrough",
+    "author": "Shotgunnova",
+    "desc": "Guide and Walkthrough",
+    "path": "guide/chrono-cross",
+    "hasAchievements": false
+  },
+  {
     "slug": "dragon-warrior-i-ii",
     "title": "Dragon Warrior I & II",
     "subtitle": "Guide and Walkthrough",
