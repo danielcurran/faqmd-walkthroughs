@@ -903,3 +903,82 @@ body.ach-modal-scroll-lock #main {
   #nav-top, #nav-bottom { padding: 8px 12px; }
   .nav-btn { padding: 6px 14px; font-size: 0.85rem; }
 }
+
+/* --- E-ink toggle button (normal mode) --- */
+#eink-btn {
+  background: var(--ff-blue);
+  color: var(--ff-gold);
+  border: 1px solid var(--ff-border);
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+}
+
+/* --- E-ink pagination structure --- */
+.eink-page { display: none; }
+.eink-page.active { display: block; }
+
+/* Page nav — hidden by default, shown via JS in eink mode */
+#eink-page-nav {
+  display: none;
+  text-align: center;
+  padding: 10px 16px;
+  background: #f0f0f0;
+  border-top: 1px solid #ccc;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: #333;
+  flex-shrink: 0;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+#eink-page-nav button {
+  padding: 4px 12px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  background: #fff;
+  color: #000;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+#eink-page-nav button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* E-ink mode layout adjustments */
+body.eink-mode #content {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+body.eink-mode .eink-page.active {
+  display: block;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Landing page e-ink toggle */
+.eink-toggle-wrap {
+  text-align: right;
+  margin-bottom: 4px;
+}
+.eink-toggle {
+  display: inline-block;
+  font-size: 1.1rem;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.15s;
+  cursor: pointer;
+  line-height: 1;
+}
+.eink-toggle:hover {
+  border-color: var(--ff-gold);
+  background: rgba(237,215,88,0.08);
+  text-decoration: none;
+}
+

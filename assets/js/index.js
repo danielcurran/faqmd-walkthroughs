@@ -3,6 +3,46 @@
     navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed', err));
   }
 
+  const EINK_KEY = 'gamemds-eink-mode';
+
+  function loadEink() {
+    try { return localStorage.getItem(EINK_KEY) === '1'; } catch { return false; }
+  }
+
+  function saveEink(on) {
+    try { localStorage.setItem(EINK_KEY, on ? '1' : '0'); } catch {}
+  }
+
+  function applyEink() {
+    const on = loadEink();
+    const toggle = document.getElementById('eink-toggle');
+    if (on) {
+      document.body.classList.add('eink-mode');
+      if (toggle) toggle.textContent = '🌙';
+    } else {
+      document.body.classList.remove('eink-mode');
+      if (toggle) toggle.textContent = '☀️';
+    }
+  }
+
+  applyEink();
+
+  const toggle = document.getElementById('eink-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', e => {
+      e.preventDefault();
+      const on = !document.body.classList.contains('eink-mode');
+      if (on) {
+        document.body.classList.add('eink-mode');
+        toggle.textContent = '🌙';
+      } else {
+        document.body.classList.remove('eink-mode');
+        toggle.textContent = '☀️';
+      }
+      saveEink(on);
+    });
+  }
+
   const list = document.getElementById('guide-list');
   if (!list) return;
 
